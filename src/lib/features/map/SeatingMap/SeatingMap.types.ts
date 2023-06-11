@@ -61,14 +61,25 @@ export namespace SeatingMapTypes {
 		}
 	>;
 
-	// TODO
+	/**
+	 * Context types namespace
+	 * @export
+	 */
 	export namespace Context {
+		/**
+		 * Props type
+		 * @export
+		 */
 		export type Props = {
 			/** seating input data */
 			data: Data;
 			dataExtended: DataExtended;
 		};
 
+		/**
+		 * State type
+		 * @export
+		 */
 		export type State = Extend<
 			{
 				selectedSeatId: SelectedSeatIdState;
@@ -80,6 +91,10 @@ export namespace SeatingMapTypes {
 			Props
 		>;
 
+		/**
+		 * SelectedSeatIdState type
+		 * @export
+		 */
 		export type SelectedSeatIdState = UUID | null;
 	}
 }

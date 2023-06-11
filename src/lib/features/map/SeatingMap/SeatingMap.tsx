@@ -1,4 +1,6 @@
 import { ActionIcon, Alert, Badge, Button, Skeleton, Text } from '@mantine/core';
+import { DefinitionItem } from '@project/lib/components/DefinitionItem';
+import { useCartContext } from '@project/lib/features/cart/Cart/Cart.context';
 import { useFormat } from '@project/lib/features/formatter/useFormat';
 import { Seat } from '@project/lib/features/map/Seat';
 import { useSeatingMapContext } from '@project/lib/features/map/SeatingMap/SeatingMap.context';
@@ -19,8 +21,11 @@ import type { SeatingMapTypes as Types } from './SeatingMap.types';
  * @author filipditrich <ditrich@nfctron.com>
  * @constructor
  */
-export const SeatingMap: FunctionComponent<Types.Props> = ({ width, height, background = '#292929', ...rest }) => {
+export const SeatingMap: FunctionComponent<Types.Props> = ({ width: inputWidth, height, background = '#292929', ...rest }) => {
 	const { dataExtended, onSeatSelect, onSeatUnselect, selectedSeatId } = useSeatingMapContext();
+	const { cartedTickets } = useCartContext();
+	const isWidthShrunk = cartedTickets.length === 0;
+	const width = isWidthShrunk ? inputWidth : inputWidth - 500;
 
 	/** parse the svg */
 	const svgData = useMemo(() => {
@@ -163,7 +168,12 @@ export const SeatingMap: FunctionComponent<Types.Props> = ({ width, height, back
 			</VirtualMap>
 
 			{/* seat detail sheet */}
-			<Sheet isOpen={isDefined(selectedSeatId)} onClose={() => onSeatUnselect()} detent="content-height">
+			<Sheet
+				className={clsx('react-modal-sheet-root', !isWidthShrunk && 'expanded')}
+				isOpen={isDefined(selectedSeatId)}
+				onClose={() => onSeatUnselect()}
+				detent="content-height"
+			>
 				<Sheet.Container>
 					{/* sheet header */}
 					<Sheet.Header className="flex items-start justify-between gap-2 p-3">
@@ -193,6 +203,8 @@ export const SeatingMap: FunctionComponent<Types.Props> = ({ width, height, back
 const SeatSheetDetail: FunctionComponent = () => {
 	const format = useFormat();
 	const { dataExtended, onSeatSelect, onSeatUnselect, selectedSeatId } = useSeatingMapContext();
+	const { addToCartHandler, cartedTickets, removeFromCartHandler, replaceCartedTicketHandler } = useCartContext();
+	const isSeatCarted = cartedTickets.some((ticket) => ticket.seat?.seatId === selectedSeatId);
 
 	const seatConfiguration = useMemo(() => {
 		if (!isDefined(selectedSeatId)) return null;
@@ -205,21 +217,19 @@ const SeatSheetDetail: FunctionComponent = () => {
 				<React.Fragment>
 					<div className="grid grid-cols-3 gap-2">
 						<DefinitionItem label="Category">
-							{
-								<Badge
-									variant="filled"
-									styles={{
-										root: {
-											backgroundColor: seatConfiguration.category.color,
-										},
-									}}
-								>
-									<div className="flex items-center gap-1.5">
-										<div className="h-[5px] w-[5px] rounded-full bg-white" />
-										{seatConfiguration.category.name}
-									</div>
-								</Badge>
-							}
+							<Badge
+								variant="filled"
+								styles={{
+									root: {
+										backgroundColor: seatConfiguration.category.color,
+									},
+								}}
+							>
+								<div className="flex items-center gap-1.5">
+									<div className="h-[5px] w-[5px] rounded-full bg-white" />
+									{seatConfiguration.category.name}
+								</div>
+							</Badge>
 						</DefinitionItem>
 						<DefinitionItem label="Row">{seatConfiguration.row}</DefinitionItem>
 						<DefinitionItem label="Place">{seatConfiguration.place}</DefinitionItem>
@@ -228,9 +238,7 @@ const SeatSheetDetail: FunctionComponent = () => {
 					{/* sold out */}
 					{seatConfiguration.capacityLeft === 0 && (
 						<Alert icon={<IconAlertCircle size="1rem" />} title="This seat is sold out" color="gray" variant="outline">
-							<Text>
-								Sorry, this seat is sold out. Please select another one.
-							</Text>
+							<Text>Sorry, this seat is sold out. Please select another one.</Text>
 						</Alert>
 					)}
 
@@ -242,6 +250,7 @@ const SeatSheetDetail: FunctionComponent = () => {
 									ticket.categories.find((ticketCategory) => ticketCategory.categoryId === seatConfiguration.category.categoryId),
 									'Ticket category not found',
 								);
+								const isSeatTicketCarted = isSeatCarted && cartedTickets.some((cartedTicket) => cartedTicket.ticket.ticketId === ticket.ticketId);
 								return (
 									<div key={ticket.ticketId} className="flex flex-col gap-2">
 										{/* content */}
@@ -257,11 +266,43 @@ const SeatSheetDetail: FunctionComponent = () => {
 											{/* TODO: currency */}
 											<Text color="black">{format.formatPrice(ticketCategory.price, 'CZK')}</Text>
 										</div>
-										
+
 										{/* add to cart button */}
-										<Button fullWidth size="md">
-											Add To Cart
-										</Button>
+										{isSeatCarted && !isSeatTicketCarted ? (
+											<Button
+												fullWidth
+												onClick={() => {
+													const cartedTicket = cartedTickets.find((cartedTicket) => cartedTicket.seat?.seatId === selectedSeatId);
+													if (!isDefined(cartedTicket)) return;
+													replaceCartedTicketHandler.handler(cartedTicket.cartedTicketId, ticket, seatConfiguration);
+												}}
+												loading={replaceCartedTicketHandler.isProcessing}
+											>
+												Pick this ticket
+											</Button>
+										) : isSeatCarted ? (
+											<Button
+												fullWidth
+												color="orange"
+												loading={removeFromCartHandler.isProcessing}
+												onClick={() => {
+													const cartedTicket = cartedTickets.find((cartedTicket) => cartedTicket.seat?.seatId === selectedSeatId);
+													if (!isDefined(cartedTicket)) return;
+													removeFromCartHandler.handler(cartedTicket.cartedTicketId);
+												}}
+											>
+												Remove from cart
+											</Button>
+										) : (
+											<Button
+												fullWidth
+												disabled={seatConfiguration.capacityLeft === 0}
+												onClick={() => addToCartHandler.handler(ticket, seatConfiguration).then(() => onSeatUnselect())}
+												loading={addToCartHandler.isProcessing}
+											>
+												Add To Cart
+											</Button>
+										)}
 									</div>
 								);
 							})}
@@ -272,23 +313,5 @@ const SeatSheetDetail: FunctionComponent = () => {
 				<Skeleton height={200} width="100%" radius="md" />
 			)}
 		</Sheet.Content>
-	);
-};
-
-type DefinitionItemProps = ExtendedComponent<
-	{
-		label: ReactNode;
-		children: ReactNode;
-	},
-	'div'
->;
-const DefinitionItem: FunctionComponent<DefinitionItemProps> = ({ label, children, ...props }) => {
-	return (
-		<div {...props}>
-			<Text weight="bold" color="gray" size="xs">
-				{label}
-			</Text>
-			<Text color="black">{children}</Text>
-		</div>
 	);
 };
