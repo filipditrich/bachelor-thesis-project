@@ -1,12 +1,11 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { CartTypes as Types, useCartContactDetailsSchema } from '@project/lib/features/cart/Cart/Cart.types';
 import { useMultiView } from '@project/lib/features/multi-view/MultiView';
-import { DELAY_NETWORK, simulatedNetworkDelay } from '@project/lib/hooks/useDebug';
+import { simulatedNetworkDelay } from '@project/lib/hooks/useDebug';
 import { useHandler } from '@project/lib/hooks/useHandler';
 import { useWaitUntil } from '@project/lib/hooks/useNow';
-import { fakePromise, isDefined, randomIntBetween, valOrThrow } from '@project/lib/utils/common';
-import { subSeconds } from 'date-fns';
-import addMinutes from 'date-fns/addMinutes';
+import { isDefined, randomIntBetween, valOrThrow } from '@project/lib/utils/common';
+import { addMinutes, addSeconds, subSeconds } from 'date-fns';
 import { useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { v4 as uuidv4 } from 'uuid';
@@ -53,6 +52,26 @@ export const useCart = (options: Types.UseCart.Options): Types.UseCart.Return =>
 	/** calculates cart total */
 	const cartTotal = useMemo(() => cartedTickets.reduce((acc, cartedTicket) => acc + getCartedTicketPrice(cartedTicket), 0), [cartedTickets]);
 
+	/** multi view provider */
+	const multiViewProvider = useMultiView({
+		initialView: Types.TMultiView.SEATING_MAP,
+		allowedViews: [
+			{
+				view: Types.TMultiView.SEATING_MAP,
+				enabled: true,
+			},
+			{
+				view: Types.TMultiView.CHECKOUT,
+				enabled: cartedTickets.length > 0,
+				visible: true,
+			},
+			{
+				view: Types.TMultiView.ORDER_RESULT,
+				enabled: true,
+			},
+		],
+	});
+
 	/** clear reservation handler */
 	const clearReservationHandler = useHandler<Types.UseCart.ClearReservationCb>(
 		async () => {
@@ -74,7 +93,8 @@ export const useCart = (options: Types.UseCart.Options): Types.UseCart.Return =>
 				console.log('[Cart] Creating reservation...');
 				await simulatedNetworkDelay();
 				/** TODO: API should be called instead */
-				_setReservation({ reservationId: uuidv4(), reservedUntil: addMinutes(new Date(), 5) });
+				const reservedUntil = seat?.place === 13 ? addSeconds(new Date(), 33) : addMinutes(new Date(), 5);
+				_setReservation({ reservationId: uuidv4(), reservedUntil });
 				console.log('[Cart] Reservation created');
 			}
 			/** create a new carted ticket */
@@ -143,27 +163,8 @@ export const useCart = (options: Types.UseCart.Options): Types.UseCart.Return =>
 	useWaitUntil(reservation?.reservedUntil, async () => {
 		window.alert('Reservation expired, clearing cart...');
 		await clearReservationHandler.handler();
+		multiViewProvider.changeView(Types.TMultiView.SEATING_MAP);
 		await options.onReservationExpired();
-	});
-
-	/** multi view provider */
-	const multiViewProvider = useMultiView({
-		initialView: Types.TMultiView.SEATING_MAP,
-		allowedViews: [
-			{
-				view: Types.TMultiView.SEATING_MAP,
-				enabled: true,
-			},
-			{
-				view: Types.TMultiView.CHECKOUT,
-				enabled: cartedTickets.length > 0,
-				visible: true,
-			},
-			{
-				view: Types.TMultiView.ORDER_RESULT,
-				enabled: true,
-			},
-		],
 	});
 
 	/** create order handler */

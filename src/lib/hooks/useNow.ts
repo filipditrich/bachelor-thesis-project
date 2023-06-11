@@ -45,16 +45,21 @@ export const useWaitUntil = (date: Date | null | undefined, then: () => Promise<
 
 	/** update interval each minute */
 	const interval = useInterval(() => {
-		if (!isDefined(date)) return false;
+		if (!isDefined(date)) return;
 		const now = new Date();
-		if (now >= date) {
-			setIsDone(true);
-			interval.stop();
-			then().then(() => {
-				setIsDone(false);
-			});
+		if (now >= date && !isDone) {
+			then().then(() => setIsDone(true));
 		}
 	}, 1000);
+
+	useEffect(() => {
+		if (isDefined(date)) {
+			interval.start();
+		} else {
+			interval.stop();
+		}
+		setIsDone(false);
+	}, [date, interval]);
 
 	return {
 		isDone,
