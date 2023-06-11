@@ -1,4 +1,4 @@
-import { HexAlpha } from '@nfctron-tickets/types';
+import { HexAlpha } from '@project/lib/types/common';
 import Color from 'color';
 
 /**
@@ -23,3 +23,10 @@ export const modifyColor = (color: HexAlpha, cb: (clr: Color) => Color): HexAlph
  * @returns {Ret}
  */
 export const getColor = <Ret extends any>(color: HexAlpha, cb: (clr: Color) => Ret) => cb(Color(color));
+
+/**
+ * Returns foreground color based on background color
+ * @param {string} color
+ * @returns {Color<'#fff'>}
+ */
+export const getFgColor = (color: string) => getColor(hexAlpha(color), (c) => (c.isDark() ? new Color('#fff') : new Color('#000')));
