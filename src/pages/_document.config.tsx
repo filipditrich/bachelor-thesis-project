@@ -29,16 +29,15 @@ class DocumentConfig extends Document {
 		/** return `@mantine/next` initial props */
 		return getInitialProps(context);
 	}
-	
+
 	render() {
 		return (
 			<Html lang="cs">
 				<Head>
 					{/* google fonts */}
 					<link rel="preconnect" href="https://fonts.gstatic.com" />
-					<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap"
-					      rel="stylesheet" />
-					
+					<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
+
 					{/* favicons */}
 					<meta name="theme-color" content="#EC4899" />
 					<link rel="icon" href="/static/favicons/favicon.ico" />
@@ -55,8 +54,8 @@ class DocumentConfig extends Document {
 					<meta name="theme-color" content="#EC4899" />
 				</Head>
 				<body>
-				<Main />
-				<NextScript />
+					<Main />
+					<NextScript />
 				</body>
 			</Html>
 		);

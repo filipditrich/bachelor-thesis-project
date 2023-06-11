@@ -1,4 +1,5 @@
-import { arrayOf, randomIntBetween } from '@project/lib/utils/common';
+import { DELAY_NETWORK, simulatedNetworkDelay } from '@project/lib/hooks/useDebug';
+import { arrayOf, fakePromise, randomIntBetween } from '@project/lib/utils/common';
 import { VenueApiTypes } from '@project/pages/api/venue/schema';
 import { withErrorMiddleware } from '@project/pages/api/withError.middleware';
 import { NextApiHandler } from 'next/types';
@@ -90,7 +91,7 @@ const SEATS_MIDDLE = ['B', 'C', 'D', 'E', 'F'].reduce((acc, row) => {
 				row,
 				place,
 				capacityLeft: 1,
-				fullName: `${row}${place}`,
+				fullName: `Row ${row}, Seat ${place}`,
 				tickets: ['B', 'C'].includes(row) ? [TICKET_VIP_PLUS.ticketId, TICKET_VIP.ticketId] : [TICKET_REGULAR.ticketId],
 				categoryId: CATEGORY_MIDDLE.categoryId,
 			};
@@ -106,7 +107,7 @@ const SEATS_LEFT = ['A', 'B', 'C', 'D', 'E', 'F', 'G'].reduce((acc, row) => {
 				row,
 				place,
 				capacityLeft: 1,
-				fullName: `${row}${place}`,
+				fullName: `Row ${row}, Seat ${place}`,
 				tickets: ['A', 'B'].includes(row) ? [TICKET_VIP.ticketId] : [TICKET_REGULAR.ticketId],
 				categoryId: CATEGORY_SIDE.categoryId,
 			};
@@ -122,7 +123,7 @@ const SEATS_RIGHT = ['A', 'B', 'C', 'D', 'E', 'F', 'G'].reduce((acc, row) => {
 				row,
 				place,
 				capacityLeft: 1,
-				fullName: `${row}${place}`,
+				fullName: `Row ${row}, Seat ${place}`,
 				tickets: ['A', 'B'].includes(row) ? [TICKET_VIP.ticketId] : [TICKET_REGULAR.ticketId],
 				categoryId: CATEGORY_SIDE.categoryId,
 			};
@@ -138,7 +139,7 @@ const SEATS_BALCONY = ['H', 'I', 'J', 'K', 'L'].reduce((acc, row) => {
 				row,
 				place,
 				capacityLeft: randomIntBetween(0, 1),
-				fullName: `${row}${place}`,
+				fullName: `Row ${row}, Seat ${place}`,
 				tickets: ['H', 'I'].includes(row) && place >= 8 && place <= 14 ? [TICKET_VIP.ticketId] : [TICKET_REGULAR.ticketId],
 				categoryId: CATEGORY_BALCONY.categoryId,
 			};
@@ -159,12 +160,16 @@ const seatingApiHandler: NextApiHandler = async (req, res) => {
 	/** get the data */
 	const data: VenueApiTypes.ApiSchema = {
 		venueId: uuidv4(),
-		name: 'Seating map',
+		name: 'Fictional Theatre',
 		seats,
 		categories,
 		tickets,
 		drawing,
 	};
+
+	/** simulate network delay */
+	await simulatedNetworkDelay();
+
 	/** return data in JSON format */
 	res.status(200).json(data);
 };

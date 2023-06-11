@@ -5,7 +5,7 @@ import {
 	GetServerSidePropsResult,
 	GetStaticProps,
 	GetStaticPropsContext,
-	GetStaticPropsResult
+	GetStaticPropsResult,
 } from 'next/types';
 
 /**
@@ -24,12 +24,12 @@ export type PageComponent<T> = NextPage<InferPagePropsType<T> extends never ? T 
 type InferPagePropsType<T> = T extends GetServerSideProps<infer P, any>
 	? P
 	: T extends (context?: GetServerSidePropsContext<any>) => Promise<GetServerSidePropsResult<infer P>>
-		? P
-		: T extends GetStaticProps<infer P, any>
-			? P
-			: T extends (context?: GetStaticPropsContext<any>) => Promise<GetStaticPropsResult<infer P>> | GetStaticPropsResult<infer P>
-				? P
-				: never;
+	? P
+	: T extends GetStaticProps<infer P, any>
+	? P
+	: T extends (context?: GetStaticPropsContext<any>) => Promise<GetStaticPropsResult<infer P>> | GetStaticPropsResult<infer P>
+	? P
+	: never;
 
 /**
  * Next.js page component path params

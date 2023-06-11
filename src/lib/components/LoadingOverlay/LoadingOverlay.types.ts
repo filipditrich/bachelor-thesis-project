@@ -1,5 +1,5 @@
 import { LoadingOverlay as MantineLoadingOverlay } from '@mantine/core';
-import { ExtendedComponent } from '@nfctron-tickets/types';
+import { ExtendedComponent } from '@project/lib/types/common';
 import { ReactNode } from 'react';
 
 /**

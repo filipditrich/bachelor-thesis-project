@@ -28,7 +28,7 @@ export type State<T, D = T> = [T, Dispatch<SetStateAction<D>>];
 /**
  * Type alias for 8-bit hexadecimal string
  */
-export type HexAlpha = `#${Uppercase<string>}`;
+export type HexAlpha = `#${string}`;
 
 /**
  * Type alias for star rating

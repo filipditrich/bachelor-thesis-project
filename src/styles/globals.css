@@ -2,16 +2,25 @@
 @tailwind components;
 @tailwind utilities;
 
+.react-modal-sheet-root {
+    /* custom styles */
+    @apply transition-all;
+}
+
 .react-modal-sheet-backdrop {
     /* custom styles */
 }
 .react-modal-sheet-container {
-
+    @apply rounded-t-xl border border-gray-200 shadow-lg !important;
 }
 @media (min-width: 1024px) {
     .react-modal-sheet-container {
         max-width: 650px;
         left: calc(50% - 325px) !important;
+    }
+
+    .react-modal-sheet-root.expanded {
+        max-width: calc(100vw - 450px) !important;
     }
 }
 .react-modal-sheet-header {

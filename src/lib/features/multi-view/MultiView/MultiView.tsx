@@ -27,19 +27,14 @@ export function MultiView<V extends string | number>({ provider, children, ...pr
 function MultiViewView<V extends string | number>({ children, view, ...props }: MultiViewViewProps<V>) {
 	const { activeView } = useContextRequired(MultiViewContext);
 	const isViewIn = (Array.isArray(view) ? view : [view]).includes(activeView);
-	
+
 	const transitions = useTransition(isViewIn, {
 		from: { transform: 'translate3d(100%,0,0)', opacity: 0 },
 		enter: { transform: 'translate3d(0%,0,0)', opacity: 1 },
 		leave: { transform: 'translate3d(-50%,0,0)', opacity: 0 },
-	})
-	
-	
-	return transitions((style, render) => render && (
-		<animated.div style={style}>
-			{children}
-		</animated.div>
-	));
+	});
+
+	return transitions((style, render) => render && <animated.div style={style}>{children}</animated.div>);
 }
 
 MultiView.View = MultiViewView;

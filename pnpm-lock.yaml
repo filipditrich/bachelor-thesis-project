@@ -1,6 +1,7 @@
 lockfileVersion: 5.4
 
 specifiers:
+  '@hookform/resolvers': 3.1.0
   '@mantine/core': 6.0.10
   '@mantine/eslint-config': 3.6.14
   '@mantine/hooks': 6.0.10
@@ -22,6 +23,7 @@ specifiers:
   axios: 1.4.0
   clsx: 1.2.1
   color: 4.2.3
+  date-fns: 2.30.0
   eslint: 8.40.0
   eslint-config-airbnb: 19.0.4
   eslint-config-airbnb-typescript: 17.0.0
@@ -41,7 +43,9 @@ specifiers:
   prettier: 2.8.8
   prettier-plugin-tailwindcss: 0.2.8
   react: 18.2.0
+  react-countdown: 2.3.5
   react-dom: 18.2.0
+  react-hook-form: 7.44.3
   react-modal-sheet: 1.10.2
   react-query: 3.39.3
   react-spring: 9.7.1
@@ -49,9 +53,12 @@ specifiers:
   svg-parser: 2.0.4
   tailwindcss: 3.3.2
   typescript: 5.0.4
+  usehooks-ts: 2.9.1
   uuid: 9.0.0
+  zod: 3.21.4
 
 dependencies:
+  '@hookform/resolvers': 3.1.0_react-hook-form@7.44.3
   '@mantine/core': 6.0.10_ax4rozuubpy5lydedoie5ueqvm
   '@mantine/eslint-config': 3.6.14_rlu3ou6irpg2thof7kyzei26xe
   '@mantine/hooks': 6.0.10_react@18.2.0
@@ -73,6 +80,7 @@ dependencies:
   axios: 1.4.0
   clsx: 1.2.1
   color: 4.2.3
+  date-fns: 2.30.0
   eslint: 8.40.0
   eslint-config-airbnb: 19.0.4_ynkdjr6rqi3jkuog4tlzqcsa2q
   eslint-config-airbnb-typescript: 17.0.0_u5np3uibmhfnpb4odsp7dcxkle
@@ -92,7 +100,9 @@ dependencies:
   prettier: 2.8.8
   prettier-plugin-tailwindcss: 0.2.8_prettier@2.8.8
   react: 18.2.0
+  react-countdown: 2.3.5_biqbaboplfbrettd7655fr4n2y
   react-dom: 18.2.0_react@18.2.0
+  react-hook-form: 7.44.3_react@18.2.0
   react-modal-sheet: 1.10.2_fcrtyxc63qaqg23qbdfquoo27i
   react-query: 3.39.3_p6yha6yhwwbn6fx35urqieztzm
   react-spring: 9.7.1_sst4dcclkcq33lpodvvwc7fgxq
@@ -100,7 +110,9 @@ dependencies:
   svg-parser: 2.0.4
   tailwindcss: 3.3.2
   typescript: 5.0.4
+  usehooks-ts: 2.9.1_biqbaboplfbrettd7655fr4n2y
   uuid: 9.0.0
+  zod: 3.21.4
 
 packages:
 
@@ -1762,6 +1774,14 @@ packages:
     resolution: {integrity: sha512-foQZKJig7Ob0BMAYBfcJk8d77QtOe7Wo4ox7ff1lQYoNNAb6jwcY1ncdoy2e9wQZzvNy7ODZCYJkK8kzmcAnAg==}
     dependencies:
       '@hapi/hoek': 9.3.0
+    dev: false
+
+  /@hookform/resolvers/3.1.0_react-hook-form@7.44.3:
+    resolution: {integrity: sha512-z0A8K+Nxq+f83Whm/ajlwE6VtQlp/yPHZnXw7XWVPIGm1Vx0QV8KThU3BpbBRfAZ7/dYqCKKBNnQh85BkmBKkA==}
+    peerDependencies:
+      react-hook-form: ^7.0.0
+    dependencies:
+      react-hook-form: 7.44.3_react@18.2.0
     dev: false
 
   /@humanwhocodes/config-array/0.11.8:
@@ -4600,6 +4620,13 @@ packages:
       abab: 2.0.6
       whatwg-mimetype: 2.3.0
       whatwg-url: 8.7.0
+    dev: false
+
+  /date-fns/2.30.0:
+    resolution: {integrity: sha512-fnULvOpxnC5/Vg3NCiWelDsLiUc9bRwAPs/+LfTLNvetFCtCTN+yQz15C/fs4AwX1R9K5GLtLfn8QW+dWisaAw==}
+    engines: {node: '>=0.11'}
+    dependencies:
+      '@babel/runtime': 7.21.5
     dev: false
 
   /dayjs/1.11.8:
@@ -9020,6 +9047,17 @@ packages:
     engines: {node: '>= 0.6'}
     dev: false
 
+  /react-countdown/2.3.5_biqbaboplfbrettd7655fr4n2y:
+    resolution: {integrity: sha512-K26ENYEesMfPxhRRtm1r+Pf70SErrvW3g4CArLi/x6MPFjgfDFYePT4UghEj8p2nI0cqVV7/JjDgjyr//U60Og==}
+    peerDependencies:
+      react: '>= 15'
+      react-dom: '>= 15'
+    dependencies:
+      prop-types: 15.8.1
+      react: 18.2.0
+      react-dom: 18.2.0_react@18.2.0
+    dev: false
+
   /react-devtools-core/4.27.8:
     resolution: {integrity: sha512-KwoH8/wN/+m5wTItLnsgVraGNmFrcTWR3k1VimP1HjtMMw4CNF+F5vg4S/0tzTEKIdpCi2R7mPNTC+/dswZMgw==}
     dependencies:
@@ -9038,6 +9076,15 @@ packages:
       loose-envify: 1.4.0
       react: 18.2.0
       scheduler: 0.23.0
+    dev: false
+
+  /react-hook-form/7.44.3_react@18.2.0:
+    resolution: {integrity: sha512-/tHId6p2ViAka1wECMw8FEPn/oz/w226zehHrJyQ1oIzCBNMIJCaj6ZkQcv+MjDxYh9MWR7RQic7Qqwe4a5nkw==}
+    engines: {node: '>=12.22.0'}
+    peerDependencies:
+      react: ^16.8.0 || ^17 || ^18
+    dependencies:
+      react: 18.2.0
     dev: false
 
   /react-is/16.13.1:
@@ -10742,6 +10789,17 @@ packages:
   /use/3.1.1:
     resolution: {integrity: sha512-cwESVXlO3url9YWlFW/TA9cshCEhtu7IKJ/p5soJ/gGpj7vbvFrAY/eIioQ6Dw23KjZhYgiIo8HOs1nQ2vr/oQ==}
     engines: {node: '>=0.10.0'}
+    dev: false
+
+  /usehooks-ts/2.9.1_biqbaboplfbrettd7655fr4n2y:
+    resolution: {integrity: sha512-2FAuSIGHlY+apM9FVlj8/oNhd+1y+Uwv5QNkMQz1oSfdHk4PXo1qoCw9I5M7j0vpH8CSWFJwXbVPeYDjLCx9PA==}
+    engines: {node: '>=16.15.0', npm: '>=8'}
+    peerDependencies:
+      react: ^16.8.0  || ^17.0.0 || ^18.0.0
+      react-dom: ^16.8.0  || ^17.0.0 || ^18.0.0
+    dependencies:
+      react: 18.2.0
+      react-dom: 18.2.0_react@18.2.0
     dev: false
 
   /util-deprecate/1.0.2:
