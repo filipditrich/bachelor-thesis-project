@@ -9,7 +9,7 @@ module.exports = {
   pageExtensions: ['page.tsx', 'page.ts', 'api.tsx', 'api.ts', 'config.ts', 'config.tsx'],
   swcMinify: true,
   webpack: (config, { isServer, defaultLoaders }) => {
-    /** enable inline SVG icon file imports */
+    /** enable inline SVG icon file imports (as components) */
     config.module.rules.push({
       test: /\.svg$/,
       issuer: /\.tsx?$/,
@@ -24,6 +24,13 @@ module.exports = {
           },
         },
       ],
+    });
+    
+    /** enable inline SVG imports (as string) */
+    config.module.rules.push({
+      test: /\.svg$/,
+      include: [path.resolve(__dirname, './src/pages/api/data')],
+      loader: 'svg-inline-loader'
     });
     
     return config;
