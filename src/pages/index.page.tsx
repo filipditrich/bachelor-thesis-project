@@ -185,7 +185,7 @@ const IndexPage: PageComponent<Props> = () => {
 									}}
 								>
 									{/* seating map */}
-									<SeatingMap width={width} height={height - 75} minScaleFactor={1.5} maxScaleFactor={0.1} />
+									<SeatingMap width={width} height={height - 75} minScaleFactor={2} maxScaleFactor={0.1} />
 									{/* cart */}
 									<Cart />
 								</div>

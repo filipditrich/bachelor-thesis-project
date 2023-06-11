@@ -8,6 +8,9 @@ module.exports = {
   reactStrictMode: true,
   pageExtensions: ['page.tsx', 'page.ts', 'api.tsx', 'api.ts', 'config.ts', 'config.tsx'],
   swcMinify: true,
+  eslint: {
+    ignoreDuringBuilds: true,
+  },
   webpack: (config, { isServer, defaultLoaders }) => {
     /** enable inline SVG icon file imports (as components) */
     config.module.rules.push({

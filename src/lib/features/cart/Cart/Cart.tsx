@@ -2,6 +2,7 @@ import { Alert, Button, Divider, ScrollArea, Text } from '@mantine/core';
 import { TicketCard } from '@project/lib/components/TicketCard';
 import { useCartContext } from '@project/lib/features/cart/Cart/Cart.context';
 import { useFormat } from '@project/lib/features/formatter/useFormat';
+import { useSeatingMapContext } from '@project/lib/features/map/SeatingMap/SeatingMap.context';
 import { isDefined } from '@project/lib/utils/common';
 import { IconClock, IconShoppingCart } from '@tabler/icons-react';
 import clsx from 'clsx';
@@ -18,6 +19,7 @@ import { CartTypes } from './Cart.types';
  */
 export const Cart: FunctionComponent<Types.Props> = ({ className, ...rest }) => {
 	const { multiViewProvider, cartedTickets, getCartedTicketPrice, removeFromCartHandler, cartTotal, reservation, canCheckout } = useCartContext();
+	const { onSeatUnselect } = useSeatingMapContext();
 	const format = useFormat();
 	const isWidthShrunk = cartedTickets.length === 0;
 
@@ -143,6 +145,7 @@ export const Cart: FunctionComponent<Types.Props> = ({ className, ...rest }) => 
 							fullWidth
 							disabled={!canCheckout}
 							onClick={async () => {
+								onSeatUnselect();
 								multiViewProvider.changeView(CartTypes.TMultiView.CHECKOUT);
 							}}
 						>
