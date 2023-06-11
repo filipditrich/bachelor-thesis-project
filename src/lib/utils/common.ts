@@ -1,3 +1,4 @@
+import { InvalidStateError } from '@project/lib/utils/error';
 import { camelCase, isObject } from 'lodash';
 
 /**
@@ -213,6 +214,17 @@ export const fakePromise = (delay: number, resolver?: () => any, value?: any) =>
 			value,
 		),
 	);
+
+/**
+ * Returns the given value if defined, otherwise throws an error
+ * @param {T | undefined} value
+ * @param {string} message
+ * @returns {T}
+ */
+export const valOrThrow = <T>(value: T | undefined | null, message: string): NonNullable<T> => {
+	if (!isDefined(value)) throw new InvalidStateError(message);
+	return value;
+};
 
 /**
  * Resolved an input promise within a minimum delay time. It may be useful for showing a loading spinner for a minimum amount of time.

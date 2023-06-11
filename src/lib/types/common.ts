@@ -95,14 +95,19 @@ export type UnionToIntersection<U> = (U extends any ? (k: U) => void : never) ex
  * Type alias for React component/HTML tag props extractor
  * @export
  */
-export type ExtendProps<C extends keyof JSX.IntrinsicElements | JSXElementConstructor<any>> = Partial<ComponentProps<C>>;
+export type ExtendProps<C extends keyof JSX.IntrinsicElements | JSXElementConstructor<any>, TFully extends boolean = false> = TFully extends true
+	? ComponentProps<C>
+	: Partial<ComponentProps<C>>;
 
 /**
  * Type alias for component props with extended props from different React component/HTML tag
  * @export
  */
-export type ExtendedComponent<P = {}, CP extends keyof JSX.IntrinsicElements | JSXElementConstructor<any> = 'div'> = Omit<ExtendProps<CP>, keyof P> &
-	P;
+export type ExtendedComponent<
+	P = {},
+	CP extends keyof JSX.IntrinsicElements | JSXElementConstructor<any> = 'div',
+	TFully extends boolean = false,
+> = Omit<ExtendProps<CP, TFully>, keyof P> & P;
 
 /**
  * Make object deeply partial, all keys in possible nested object are optional
@@ -119,3 +124,9 @@ export type DeepPartial<T> = T extends object
  * @export
  */
 export type Booleanish = boolean | 'true' | 'false';
+
+/**
+ * Type alias non-conflicting extending of two objects
+ * @export
+ */
+export type Extend<Base, Extend> = UnionToIntersection<Omit<Base, keyof Extend> & Extend>;

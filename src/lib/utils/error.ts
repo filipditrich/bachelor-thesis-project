@@ -30,3 +30,14 @@ export class InvalidStateError extends AppError {
 		super('invalid_state', message ?? 'Invalid application state with no further error provided', 400);
 	}
 }
+
+/**
+ * API request error
+ * @extends AppError
+ * @export
+ */
+export class ApiRequestError extends AppError {
+	constructor(message?: string, status?: number) {
+		super('api_request_error', message ?? 'An error occurred while making an API request', status ?? 400);
+	}
+}

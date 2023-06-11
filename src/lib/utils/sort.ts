@@ -3,7 +3,7 @@ import { get } from 'lodash';
 
 /**
  * Generic sorter function
- * @author filipditrich <ditrich@nfctron.com>
+ * @author filipditrich <filip.ditirch@plus4u.net>
  * @param {T} a
  * @param {T} b
  * @param {SortOptions} options
@@ -21,7 +21,7 @@ export const sorter = <T extends Primitive>(a: T, b: T, options: SortOptions): n
 
 /**
  * Generic array of objects sorter
- * @author filipditrich <ditrich@nfctron.com>
+ * @author filipditrich <filip.ditirch@plus4u.net>
  * @param {Paths<T>} prop
  * @param {SortOptions} options
  * @returns {(a: T, b: T) => number}
