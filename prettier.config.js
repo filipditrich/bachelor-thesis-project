@@ -1,7 +1,8 @@
 const mantineConfig = require('@mantine/eslint-config/prettier.config');
 
 /**
- * Prettierrc configuration
+ * Prettier configuration
+ * @type {import("prettier").Options}
  */
 module.exports = {
 	...mantineConfig,
