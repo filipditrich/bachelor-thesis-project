@@ -14,8 +14,23 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "incremental": true,
+    "typeRoots": [
+      "./src/types"
+    ],
+    "baseUrl": "./src",
     "paths": {
-      "$/*": ["./src/*"]
+      "@project/icons/*": [
+        "./lib/graphics/icons/*"
+      ],
+      "@project/config/*": [
+        "../*"
+      ],
+      "@project/public/*": [
+        "../public/*"
+      ],
+      "@project/*": [
+        "./*"
+      ]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
