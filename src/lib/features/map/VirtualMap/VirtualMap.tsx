@@ -1,6 +1,7 @@
 import { ActionIcon, Divider } from '@mantine/core';
 import { IconMinus, IconPlus } from '@tabler/icons-react';
 import { useGesture } from '@use-gesture/react';
+import clsx from 'clsx';
 import React, { FunctionComponent, useCallback, useEffect, useMemo, useRef } from 'react';
 import { animated, useSpring } from 'react-spring';
 import type { VirtualMapTypes as Types } from './VirtualMap.types';
@@ -19,6 +20,7 @@ export const VirtualMap: FunctionComponent<Types.Props> = ({
 	children,
 	baseHeight,
 	baseWidth,
+	className,
 	...props
 }) => {
 	const containerRef = useRef<SVGSVGElement | null>(null);
@@ -139,6 +141,7 @@ export const VirtualMap: FunctionComponent<Types.Props> = ({
 			{/* svg */}
 			<svg
 				ref={containerRef}
+				className={clsx('transition-all', className)}
 				{...props}
 				style={{
 					/** prevent default touch device behavior while pinching */
