@@ -1,4 +1,5 @@
-import { NumberFormat, PriceFormat } from '@project/lib/utils/format';
+import { formatDate as formatDateHelper, FormatDateOptions, NumberFormat, PriceFormat } from '@project/lib/utils/format';
+import { cs, enGB } from 'date-fns/locale';
 
 /**
  * Formatter module
@@ -8,9 +9,11 @@ import { NumberFormat, PriceFormat } from '@project/lib/utils/format';
 export class FormatterModule {
 	public currentTimeZone;
 	public currentLocale;
+	public currentDateFnsLocale;
 
-	constructor(locale: string = 'cs', timezone: string = 'Europe/Prague') {
+	constructor(locale: string = 'en', timezone: string = 'Europe/Prague') {
 		this.currentLocale = locale;
+		this.currentDateFnsLocale = locale === 'cs' ? cs : enGB;
 		this.currentTimeZone = timezone;
 	}
 
@@ -26,4 +29,15 @@ export class FormatterModule {
 	 */
 	public formatPrice = (value: number, currencyIsoChar: string, settings?: Intl.NumberFormatOptions) =>
 		PriceFormat(currencyIsoChar, this.currentLocale, settings).format(Number(value) / 100);
+
+	/**
+	 * Localized date formatter
+	 * @return {string}
+	 */
+
+	public formatDate = (date: Date | number | string, dateFormat: string, options?: FormatDateOptions) =>
+		formatDateHelper(date, dateFormat, {
+			locale: this.currentDateFnsLocale,
+			...options,
+		});
 }

@@ -10,8 +10,8 @@ export const useFormat = () => {
 	const formatterModule = useMemo(
 		() => new FormatterModule('cs', 'Europe/Prague'),
 		// eslint-disable-next-line react-hooks/exhaustive-deps
-		[]
+		[],
 	);
-	
+
 	return formatterModule;
 };
