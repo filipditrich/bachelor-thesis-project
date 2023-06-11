@@ -2,24 +2,24 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --rsbs-overlay-rounded: 0rem;
-  --rsbs-max-w: theme('maxWidth.xl');
-  --rsbs-ml: auto;
-  --rsbs-mr: auto;
+.react-modal-sheet-backdrop {
+    /* custom styles */
 }
+.react-modal-sheet-container {
 
-[data-rsbs-overlay] {
-  @apply rounded-t-none;
 }
-
-[data-rsbs-overlay], [data-rsbs-backdrop], [data-rsbs-root]::after {
-  z-index: 100 !important;
+@media (min-width: 1024px) {
+    .react-modal-sheet-container {
+        max-width: 650px;
+        left: calc(50% - 325px) !important;
+    }
 }
-
-[data-rsbs-content] {
-  /*max-height: 100%;*/
-  /*display: flex;*/
-  /*flex-direction: column;*/
-  /*height: 100%;*/
+.react-modal-sheet-header {
+    /* custom styles */
+}
+.react-modal-sheet-drag-indicator {
+    /* custom styles */
+}
+.react-modal-sheet-content {
+    /* custom styles */
 }
