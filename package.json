@@ -4,7 +4,10 @@
   "private": true,
   "scripts": {
     "dev": "next dev -p 3008",
-    "start": "next start",
+    "pinit": "pnpm i && cp .env.example .env",
+    "build": "next build",
+    "start": "next start -p 3008",
+    "demo": "pnpm pinit && pnpm build && pnpm start",
     "lint": "next lint",
     "lint:errors": "next lint --quiet",
     "prettier": "prettier --ignore-path .gitignore --write",
